@@ -1,13 +1,19 @@
 import cv2
 from time import sleep
-filename = input('file name: ')
-vidcap = cv2.VideoCapture('./Video/'+filename)
-success,image = vidcap.read()
-count = 0
-success = True
-while success:
+filename = input('File name: ')
+ext = input('Extension of file: ')
+vCap = cv2.VideoCapture('./Video/'+'{}.{}'.format(filename, ext))
+
+# Extract first frame and status
+status, image = vCap.read() 
+frameCnt = 0
+while status:
     print('Processing...', end='\r') 
     sleep(0)
-    cv2.imwrite('./Frame/frame_{0:08d}.jpg'.format(count), image)     # save frame as JPEG file      
-    success,image = vidcap.read()
-    count += 1
+
+    # Save frame in target folder
+    cv2.imwrite('./Frame/'+filename+'_{0:08d}.jpg'.format(frameCnt), image) 
+
+    # Read next frame at the end
+    status, image = vCap.read()
+    frameCnt += 1
